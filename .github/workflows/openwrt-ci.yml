@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 # 
 
-name: 树莓派3B
+name: openwrt1
 
 on:
   schedule:
@@ -63,7 +63,9 @@ jobs:
           git clone https://github.com/Ameykyl/luci-app-koolproxyR
           git clone https://github.com/rosywrt/luci-theme-rosy
           git clone https://github.com/frainzy1477/luci-app-clash.git
-
+          git clone https://github.com/kenzok8/openwrt-packages
+          git clone https://github.com/kenzok8/small
+          
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
@@ -109,9 +111,9 @@ jobs:
 
           # 编译x64固件:
           cat >> .config <<EOF
-          CONFIG_TARGET_brcm2708=y
-          CONFIG_TARGET_brcm2708_bcm2710=y
-          CONFIG_TARGET_brcm2708_bcm2710_DEVICE_rpi-3=y
+          CONFIG_TARGET_x86=y
+          CONFIG_TARGET_x86_64=y
+          CONFIG_TARGET_x86_64_DEVICE_generic=y
           EOF
 
           # 固件压缩:
@@ -119,10 +121,6 @@ jobs:
           CONFIG_TARGET_IMAGES_GZIP=y
           EOF
 
-          # 编译UEFI固件:
-          cat >> .config <<EOF
-          CONFIG_EFI_IMAGES=y
-          EOF
 
           # IPv6支持:
           cat >> .config <<EOF
@@ -173,6 +171,10 @@ jobs:
           CONFIG_PACKAGE_luci-app-webadmin=y
           CONFIG_PACKAGE_luci-app-wireguard=y
           CONFIG_PACKAGE_luci-app-wrtbwmon=y
+          CONFIG_PACKAGE_luci-app-mwan3=y
+          CONFIG_PACKAGE_luci-app-mwan3helper=y
+          CONFIG_PACKAGE_luci-app-diskman=y
+          CONFIG_PACKAGE_luci-app-wireless-regdb=y
           # CONFIG_PACKAGE_luci-app-syncdial=y
           # CONFIG_PACKAGE_luci-app-koolproxyR=y
           CONFIG_PACKAGE_luci-app-clash=y
